@@ -1,0 +1,98 @@
+Purpose: Comprehensive multilingual support system that enables the NYC Transit Hub to serve New York City's incredibly diverse population by breaking down language barriers. With over 800 languages spoken in NYC and millions of residents whose primary language isn't English, this service ensures transit information is accessible to everyone, regardless of their native language.
+Core Responsibilities:
+
+Translation Management: Centralized storage and delivery of translations for all user-facing content including UI labels, button text, navigation menus, help text, and system messages across the entire application
+Dynamic Content Translation: Real-time translation of user-generated and system-generated dynamic content such as service alerts, station announcements, delay notifications, accessibility updates, and community-contributed information
+Language Detection: Intelligent automatic detection of user's preferred language using multiple signals including browser settings, device locale, geographic location, and user account preferences, with seamless fallback mechanisms
+Translation Caching: High-performance caching layer that stores frequently requested translations in memory and Redis to minimize database queries and ensure lightning-fast language switching without any lag or loading delays
+Translation Updates: Hot-reload capability allowing translation updates to be deployed instantly without requiring application redeployment, service restarts, or user cache clearing, enabling rapid fixes to translation errors
+Fallback Handling: Multi-level fallback strategy that gracefully degrades from user's preferred language → similar language variant → English, ensuring users always see meaningful content even when specific translations are missing
+RTL Support: Complete bidirectional text support for right-to-left languages (Arabic, Hebrew) including proper text alignment, icon mirroring, layout reversal, and culturally appropriate design patterns
+Locale-Specific Formatting: Culturally aware formatting of dates, times, numbers, currencies, addresses, and phone numbers according to user's locale (e.g., MM/DD/YYYY vs DD/MM/YYYY, 12-hour vs 24-hour time)
+Translation Quality Assurance: Built-in validation to detect missing translations, placeholder text, formatting errors, and inconsistencies, with automated reporting and quality scoring
+Pluralization Rules: Correct handling of singular/plural forms which vary dramatically across languages (English has 2 forms, Russian has 4, Arabic has 6)
+Context-Aware Translation: Disambiguation of homonyms and context-dependent words (e.g., "station" as a place vs "to station" as a verb) to ensure accurate meaning
+Translation Versioning: Track and manage translation changes over time with version control, enabling rollback capabilities and A/B testing of different translation variants
+
+Supported Languages (Reflecting NYC's Top Languages):
+
+English (en) - Default language
+Spanish (es) - 2nd most common in NYC
+Chinese Simplified (zh) - Mandarin speakers
+Chinese Traditional (zh-TW) - Cantonese speakers
+Russian (ru) - Large Russian-speaking community
+Korean (ko) - Korean community
+French (fr) - Haitian Creole speakers often know French
+Arabic (ar) - Growing Arabic-speaking population
+Bengali (bn) - Bangladeshi community
+Hindi (hi) - Indian community
+
+Key Features:
+
+Client-side translations for instant language switching (i18next on frontend)
+Server-side translations for emails, push notifications, and dynamic content
+Translation versioning to track changes over time
+Missing translation detection and reporting
+Pluralization rules for different languages
+Context-aware translations (e.g., "station" as noun vs. verb)
+Translation interpolation (inserting variables into translated text)
+Language-specific content variants
+Translation quality scoring
+Community contribution support (future enhancement)
+
+Technology Stack:
+
+Flask with SQLAlchemy
+i18next for frontend internationalization
+Babel for Python internationalization
+SQLite for storing dynamic translations
+JSON files for static translations
+
+Database: SQLite (localization.db)
+
+translations - Dynamic content translations
+languages - Supported language metadata
+translation_keys - Master list of translatable keys
+user_preferences - User language preferences (optional)
+
+Schema Details:
+sqllanguages:
+  - id (primary key)
+  - code (ISO 639-1 code: 'en', 'es', 'zh', etc.)
+  - name (English name: 'English', 'Spanish')
+  - native_name (Native name: 'English', 'Español')
+  - is_rtl (boolean for right-to-left languages)
+  - is_active (boolean to enable/disable languages)
+  - display_order (for UI ordering)
+
+translations:
+  - id (primary key)
+  - key (translation key: 'station.name', 'alert.delay')
+  - language_code (foreign key to languages)
+  - value (translated text)
+  - context (optional context for translators)
+  - created_at, updated_at
+  - UNIQUE(key, language_code)
+
+translation_keys:
+  - id, key (unique)
+  - category ('ui', 'alerts', 'errors', 'stations')
+  - description (helps translators understand context)
+  - default_value (English default)
+  - created_at
+
+user_preferences:
+  - firebase_uid (primary key)
+  - preferred_language (language code)
+  - auto_detect (boolean)
+  - updated_at
+API Endpoints:
+GET    /api/localization/languages              - List all supported languages
+GET    /api/localization/translations/{lang}    - Get all translations for language
+GET    /api/localization/translate              - Translate specific keys
+POST   /api/localization/detect                 - Detect language from text
+GET    /api/localization/station/{id}/{lang}    - Get translated station info
+GET    /api/localization/user/preference        - Get user's language preference
+PUT    /api/localization/user/preference        - Set user's language preference
+POST   /api/localization/missing                - Report missing translation
+GET    /api/localization/dynamic/{type}/{id}    - Get dynamic content translation
