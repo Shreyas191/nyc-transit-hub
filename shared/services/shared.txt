@@ -1,0 +1,14 @@
+Service Communication
+Synchronous (REST APIs)
+
+Frontend ↔ API Gateway (with Firebase token)
+API Gateway ↔ Individual Services
+
+Authentication Flow
+
+User authenticates with Firebase on frontend
+Frontend gets Firebase ID token
+Frontend sends token in Authorization header to API Gateway
+API Gateway verifies token with Firebase Admin SDK
+API Gateway extracts user UID and forwards to services
+Services use UID to associate data with users

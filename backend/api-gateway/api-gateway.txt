@@ -1,0 +1,41 @@
+1. API Gateway Service (Port: 8000)
+Purpose: Acts as the single entry point and traffic controller for the entire NYC Transit Hub application, managing all incoming client requests and routing them to appropriate backend services.
+Core Responsibilities:
+
+Request Routing: Intelligently forwards requests to the correct microservice based on URL paths and HTTP methods
+Authentication Management: Verifies Firebase ID tokens from client requests before allowing access to protected resources
+Rate Limiting: Prevents API abuse by limiting the number of requests per user/IP address within a time window
+CORS Management: Handles Cross-Origin Resource Sharing to allow frontend applications to communicate securely
+Request/Response Logging: Tracks all API calls for monitoring, debugging, and analytics purposes
+Error Handling: Provides consistent error responses across all services
+Load Distribution: Can distribute traffic across multiple instances of backend services
+
+Key Features:
+
+Health check endpoint for monitoring service availability
+Request validation and sanitization
+Response caching for frequently accessed public data
+API versioning support
+Middleware pipeline for extensibility
+
+Technology Stack:
+
+Flask for lightweight API handling
+Firebase Admin SDK for token verification
+Flask-Limiter for rate limiting
+Redis (optional) for distributed rate limiting and caching
+
+No Database Required - Stateless service that relies on other services for data
+
+API Endpoints Managed:
+/api/transit/*        → Transit Service
+/api/favorites/*      → Favorites Service
+/api/alerts/*         → Alerts Service
+/api/accessibility/*  → Accessibility Service
+/health              → Gateway health check
+
+Use Cases:
+
+Mobile app makes a request to get subway status → Gateway verifies auth and routes to Transit Service
+Web app saves a favorite station → Gateway validates Firebase token and forwards to Favorites Service
+Admin dashboard checks system health → Gateway provides status of all services

@@ -1,0 +1,70 @@
+4. Alerts Service (Port: 8004)
+Purpose: Proactive notification system that monitors transit conditions and alerts users about service changes, delays, or disruptions affecting their watched routes and stations.
+Core Responsibilities:
+
+Alert Configuration: Allows users to set up custom alerts for specific routes/stations
+Continuous Monitoring: Periodically checks Transit Service for changes in service status
+Notification Delivery: Sends alerts via multiple channels (in-app, email, push notifications)
+Alert History: Maintains record of all notifications sent to users
+Smart Filtering: Prevents notification spam by only alerting on significant changes
+Schedule Management: Respects user preferences for quiet hours and notification frequency
+Multi-condition Alerts: Supports complex alert rules (e.g., "notify me if my morning train has delays")
+
+Key Features:
+
+Background scheduler runs every 1-5 minutes checking for updates
+Intelligent duplicate detection (don't re-alert for same issue)
+Priority levels (critical, high, medium, low)
+User-configurable notification preferences
+Alert templates for common scenarios
+Notification batching to avoid overwhelming users
+Geofencing support for location-based alerts
+
+Technology Stack:
+
+Flask with SQLAlchemy
+APScheduler for periodic monitoring tasks
+Firebase Admin SDK for authentication and push notifications
+Celery (optional) for asynchronous task processing
+SMTP/SendGrid for email notifications
+
+Database: SQLite (alerts.db)
+
+alerts - User alert configurations
+notifications - History of sent notifications
+
+Schema Details:
+sqlalerts:
+  - id, firebase_uid (indexed)
+  - alert_type ('delay', 'service_change', 'planned_work', 'cancellation')
+  - item_type ('station' or 'route')
+  - item_id (what to monitor)
+  - is_active (enable/disable without deleting)
+  - notification_methods (JSON: email, push, sms)
+  - created_at, updated_at
+
+notifications:
+  - id, alert_id (foreign key)
+  - firebase_uid, message, severity
+  - sent_at, status ('sent', 'failed', 'pending')
+  - read_at (track if user viewed)
+API Endpoints:
+GET    /api/alerts              - Get user's alert configurations
+POST   /api/alerts              - Create new alert
+GET    /api/alerts/{id}         - Get specific alert
+PUT    /api/alerts/{id}         - Update alert (e.g., toggle active)
+DELETE /api/alerts/{id}         - Delete alert
+GET    /api/alerts/history      - Get notification history
+POST   /api/alerts/test         - Send test notification
+Background Jobs:
+
+check_alerts_task - Runs every 2 minutes, compares current status with alert conditions
+cleanup_old_notifications - Daily job to archive old notifications
+
+Authentication: All endpoints require valid Firebase token
+Use Cases:
+
+User commutes on the 4 train → Sets alert for service changes on that line
+Service detects 4 train has delays → Alert Service notifies all subscribed users
+User wants to know about weekend construction → Sets planned work alert for their station
+User on vacation → Disables alerts temporarily without deleting them

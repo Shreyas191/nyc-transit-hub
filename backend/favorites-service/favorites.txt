@@ -1,0 +1,52 @@
+3. Favorites Service (Port: 8003)
+Purpose: Manages user-specific preferences allowing authenticated users to save and quickly access their most frequently used stations and routes.
+Core Responsibilities:
+
+Favorites Management: Create, read, update, and delete user favorite items
+User Association: Links favorites to Firebase UIDs for multi-device synchronization
+Quick Access: Provides fast retrieval of user's saved stations and routes
+Metadata Storage: Stores additional information like custom names or notes for favorites
+Usage Analytics: Tracks which favorites are accessed most frequently
+Synchronization: Ensures favorites are consistent across web and mobile apps
+
+Key Features:
+
+Support for both station and route favorites
+Duplicate prevention (can't favorite the same item twice)
+Bulk operations for adding/removing multiple favorites
+Sorting by creation date or custom order
+Rich metadata including station names, route colors, and icons
+Privacy-focused: data isolated per user
+
+Technology Stack:
+
+Flask with SQLAlchemy
+Firebase Admin SDK for authentication
+SQLite for persistent storage
+
+Database: SQLite (favorites.db)
+
+favorites - User favorites with Firebase UID linkage
+
+Schema Details:
+sqlfavorites:
+  - id (primary key)
+  - firebase_uid (indexed for fast user lookups)
+  - item_type ('station' or 'route')
+  - item_id (MTA station/route identifier)
+  - item_name (cached for quick display)
+  - custom_note (optional user note)
+  - created_at (timestamp)
+API Endpoints:
+GET    /api/favorites           - Get all favorites for authenticated user
+POST   /api/favorites           - Add new favorite
+GET    /api/favorites/{id}      - Get specific favorite details
+DELETE /api/favorites/{id}      - Remove favorite
+PUT    /api/favorites/{id}      - Update favorite (e.g., custom note)
+Authentication: All endpoints require valid Firebase token
+Use Cases:
+
+User adds "Times Square-42 St" as favorite → Service saves with their Firebase UID
+User opens app home screen → Service loads their favorite stations for quick access
+User switches from mobile to web → Favorites automatically appear (synced via Firebase UID)
+User removes old favorite → Service deletes from database

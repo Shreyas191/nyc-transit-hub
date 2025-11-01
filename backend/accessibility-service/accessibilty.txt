@@ -1,0 +1,77 @@
+5. Accessibility Service (Port: 8005)
+Purpose: Dedicated service for providing comprehensive accessibility information to ensure the transit system is navigable for users with disabilities, particularly those requiring elevators or escalators.
+Core Responsibilities:
+
+Equipment Status Tracking: Monitors real-time status of all elevators and escalators across the system
+ADA Compliance Data: Provides information about which stations meet Americans with Disabilities Act standards
+Outage Management: Tracks equipment outages with start/end times and estimated repairs
+Accessible Route Planning: Helps users plan trips using only accessible stations
+Equipment Locations: Detailed location descriptions for finding equipment within stations
+Status History: Maintains historical data for reliability analysis
+Alternative Options: Suggests nearby accessible stations when equipment is out of service
+
+Key Features:
+
+Real-time equipment status updates from MTA feeds
+Filter stations by full accessibility (elevator + platform)
+Equipment reliability scoring based on historical outages
+Notifications integration for equipment status changes
+Multi-language support for accessibility information
+Equipment maintenance schedules
+Crowdsourced status verification (future enhancement)
+
+Technology Stack:
+
+Flask with SQLAlchemy
+MTA Equipment API integration
+SQLite for persistent storage
+Scheduled updates every 10 minutes
+
+Database: SQLite (accessibility.db)
+
+elevators - All elevators in the system
+escalators - All escalators in the system
+station_accessibility - Overall accessibility ratings per station
+
+Schema Details:
+sqlelevators:
+  - id (MTA equipment ID)
+  - station_id (links to station)
+  - status ('active', 'outage', 'maintenance')
+  - location_description (e.g., "Street to Mezzanine")
+  - ada_compliance (boolean)
+  - outage_start, outage_end (nullable timestamps)
+  - updated_at
+
+escalators:
+  - Similar structure to elevators
+  - direction ('up', 'down', 'bidirectional')
+  
+station_accessibility:
+  - station_id, ada_compliant (boolean)
+  - has_elevator, elevator_count
+  - has_escalator, escalator_count
+  - accessibility_notes (TEXT)
+  - last_verified (timestamp)
+API Endpoints:
+GET /api/accessibility/stations              - All accessible stations
+GET /api/accessibility/stations/{id}         - Station accessibility details
+GET /api/accessibility/elevators             - All elevators with status
+GET /api/accessibility/elevators/{id}        - Specific elevator info
+GET /api/accessibility/elevators/outages     - Current outages
+GET /api/accessibility/escalators            - All escalators with status
+GET /api/accessibility/route                 - Plan accessible route between stations
+GET /api/accessibility/alternatives/{id}     - Find nearby accessible stations
+Background Jobs:
+
+sync_equipment_status - Fetches latest status from MTA every 10 minutes
+calculate_reliability_scores - Daily calculation of equipment uptime percentages
+
+No Authentication Required - Public accessibility information should be freely available
+Use Cases:
+
+User in wheelchair needs to commute → Service shows only stations with working elevators
+Elevator goes out of service → Service updates status immediately for route planning
+User planning trip → Service provides accessible route avoiding stations with outages
+Transit authority → Uses outage data to prioritize maintenance
+Developer building accessibility app → Uses API to power their application

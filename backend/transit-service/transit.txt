@@ -1,0 +1,52 @@
+2. Transit Service (Port: 8002)
+Purpose: Core service that integrates with the MTA API to provide real-time and static transit information for all NYC subway, bus, and rail lines.
+Core Responsibilities:
+
+MTA API Integration: Connects to official MTA data feeds to retrieve real-time transit information
+GTFS Data Processing: Parses and processes General Transit Feed Specification (GTFS) data for routes, stops, and schedules
+Real-Time Updates: Fetches and serves live train/bus locations, arrival predictions, and service alerts
+Route Management: Maintains comprehensive information about all transit routes including lines, stops, and schedules
+Station Information: Provides detailed station data including locations, accessibility features, and connections
+Service Status Tracking: Monitors and reports current service conditions (good service, delays, planned work)
+Data Caching: Implements intelligent caching to reduce API calls and improve response times
+Historical Data: Stores historical service status for trend analysis
+
+Key Features:
+
+Scheduled data refresh every 30 seconds for real-time information
+Fallback mechanisms when MTA API is unavailable
+Data normalization and formatting for consistent responses
+Geospatial queries for finding nearby stations
+Multi-modal support (subway, bus, LIRR, Metro-North)
+Service disruption notifications
+
+Technology Stack:
+
+Flask with SQLAlchemy for database ORM
+GTFS-realtime bindings for parsing MTA feeds
+APScheduler for periodic data updates
+Redis for caching frequently accessed data
+Requests library for HTTP API calls
+
+Database: SQLite (transit.db)
+
+routes - All subway/bus routes with colors and types
+stations - Station locations, names, and accessibility info
+service_status - Current and historical service conditions
+route_stations - Junction table linking routes to stations
+
+API Endpoints:
+GET /api/routes              - List all routes
+GET /api/routes/{id}         - Get specific route details
+GET /api/stations            - List all stations
+GET /api/stations/{id}       - Get station details with real-time info
+GET /api/stations/nearby     - Find stations near coordinates
+GET /api/realtime/{route_id} - Real-time train positions
+GET /api/status              - System-wide service status
+GET /api/status/{route_id}   - Route-specific status
+Use Cases:
+
+User opens app → Service provides current status of all subway lines
+User searches for a station → Service returns station details with live arrival times
+Map view loads → Service provides all station locations for markers
+Background job runs → Service fetches latest MTA data and updates database
