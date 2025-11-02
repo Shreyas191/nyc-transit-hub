@@ -1,6 +1,6 @@
 Favorites Service
 
-This microservice for the NYC Transit Hub project allows user to save and retrieve favorite subway, LIRR, and MNR stations or routes and provides real time arrival and departure updates.
+This microservice allows user to save and retrieve favorite subway, LIRR, and MNR stations or routes and provides real time arrival and departure updates.
 
 Features
 	•	Add, update, delete, and retrieve favorites.
