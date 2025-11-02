@@ -1,0 +1,98 @@
+1. Auth Service (Port: 8001)
+Purpose: Central authentication and authorization service that manages user identity, session management, and access control using Firebase Authentication.
+Core Responsibilities:
+
+User Authentication: Verifies user credentials and manages authentication flows
+Token Management: Issues, validates, and refreshes JWT tokens
+User Registration: Handles new user sign-up with email/password or OAuth providers
+Session Management: Tracks active user sessions and handles logout
+Authorization: Validates user permissions and roles for protected resources
+Profile Management: Stores and updates user profile information
+Password Management: Handles password resets and updates
+OAuth Integration: Supports Google, Facebook, and Apple sign-in
+Token Verification: Validates Firebase tokens from client requests
+User Deletion: Handles account deletion requests
+
+Key Features:
+
+Firebase Authentication integration for secure user management
+JWT token generation and validation
+Multi-factor authentication support
+Email verification workflow
+Password reset via email
+OAuth 2.0 support for social login
+Rate limiting for login attempts
+Session persistence and refresh token handling
+User profile caching for performance
+Audit logging for security events
+
+Technology Stack:
+
+Flask with SQLAlchemy
+Firebase Admin SDK for authentication
+PyJWT for token operations
+Werkzeug for password hashing
+python-dotenv for environment configuration
+
+Database: SQLite (auth.db)
+
+users - User profile information and preferences
+sessions - Active user sessions
+audit_logs - Authentication event logging
+
+Schema Details:
+sql
+users:
+  - id (primary key)
+  - firebase_uid (unique, indexed)
+  - email (unique, indexed)
+  - display_name
+  - photo_url
+  - email_verified (boolean)
+  - created_at
+  - updated_at
+  - last_login_at
+  - is_active (boolean)
+
+sessions:
+  - id (primary key)
+  - firebase_uid (indexed)
+  - token_id
+  - created_at
+  - expires_at
+  - device_info (JSON)
+  - ip_address
+
+audit_logs:
+  - id (primary key)
+  - firebase_uid
+  - action ('login', 'logout', 'register', 'password_reset', etc.)
+  - ip_address
+  - user_agent
+  - status ('success', 'failure')
+  - created_at
+
+API Endpoints:
+POST   /api/auth/register       - Register new user
+POST   /api/auth/login          - Authenticate user and get token
+POST   /api/auth/logout         - Invalidate user session
+POST   /api/auth/refresh        - Refresh expired token
+POST   /api/auth/verify         - Verify Firebase token
+GET    /api/auth/profile        - Get authenticated user profile
+PUT    /api/auth/profile        - Update user profile
+POST   /api/auth/password/reset - Request password reset
+POST   /api/auth/password/change - Change password (authenticated)
+DELETE /api/auth/account        - Delete user account
+GET    /api/auth/sessions       - List active sessions
+DELETE /api/auth/sessions/{id}  - Revoke specific session
+
+Authentication: Most endpoints require valid Firebase token except register, login, and password reset
+
+Use Cases:
+
+New user signs up → Service creates Firebase account and user profile
+User logs in → Service validates credentials and returns JWT token
+User accesses protected resource → Service validates token and returns user info
+User forgets password → Service sends password reset email via Firebase
+User updates profile → Service updates user information in database
+User logs out → Service invalidates session and clears tokens
