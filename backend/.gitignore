@@ -1,0 +1,362 @@
+# NYC Transit Hub - Global .gitignore
+
+# ===================================
+# SENSITIVE FILES - NEVER COMMIT!
+# ===================================
+# Firebase credentials
+firebase-credentials.json
+*firebase*.json
+serviceAccountKey.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# API Keys and secrets
+*.key
+*.pem
+*.p12
+secrets/
+config/secrets.yml
+
+# ===================================
+# PYTHON
+# ===================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+virtualenv/
+.venv
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+pytest_cache/
+.pytest/
+
+# Flask
+instance/
+.webassets-cache
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ===================================
+# NODE.JS / FRONTEND
+# ===================================
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Production build
+dist/
+build/
+.next/
+out/
+
+# Testing
+coverage/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# ===================================
+# DATABASES
+# ===================================
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# PostgreSQL
+*.sql
+*.dump
+
+# Redis
+dump.rdb
+
+# ===================================
+# DOCKER
+# ===================================
+# Docker volumes
+docker-compose.override.yml
+.docker/
+
+# Container data
+volumes/
+data/
+
+# ===================================
+# LOGS
+# ===================================
+logs/
+*.log
+log.txt
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===================================
+# IDE / EDITORS
+# ===================================
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# PyCharm
+.idea/
+.idea/*
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.*.swp
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# JetBrains
+.idea/
+*.iml
+
+# Xcode
+xcuserdata/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+
+# ===================================
+# OPERATING SYSTEM
+# ===================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ===================================
+# CACHE & TEMPORARY FILES
+# ===================================
+*.cache
+.cache/
+cache/
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ===================================
+# STATIC & MEDIA FILES
+# ===================================
+# User uploaded files (if any)
+media/
+uploads/
+user_uploads/
+
+# Static files (only if generated)
+staticfiles/
+static_collected/
+
+# ===================================
+# TESTING & CI/CD
+# ===================================
+.tox/
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ===================================
+# DEPLOYMENT
+# ===================================
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+
+# Ansible
+*.retry
+
+# ===================================
+# MISC
+# ===================================
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Certificates
+*.crt
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Project specific
+# Add any project-specific files below
+drafts/
+scratch/
+notes.txt
+TODO.txt
+
+# Local configuration overrides
+local_settings.py
+config.local.yml
+
+# Debug dumps
+debug/
+debug.log
+
+# Benchmarking
+benchmark_results/
+*.benchmark
