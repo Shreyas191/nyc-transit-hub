@@ -1,11 +1,11 @@
-// src/routes/index.tsx
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import { Box, Typography, Button } from '@mui/material';
 
 import Layout from '../components/layout/Layout';
+import MapView from '../pages/MapView'; 
 
-// Home Page (English)
+// Home
 const Home = () => (
   <Box 
     sx={{ 
@@ -45,7 +45,7 @@ const Home = () => (
       Real-time information platform for New York City subways and buses. Get route details, arrival times, and service status in one place.
     </Typography>
 
-    {/* Button*/}
+    {/* Buttons */}
     <Box 
       display="flex" 
       gap={{ xs: 2, md: 3 }} 
@@ -98,7 +98,7 @@ const Home = () => (
       </Button>
     </Box>
 
-    {/* decorative */}
+    {/* Decorative Element */}
     <Box 
       sx={{ 
         mt: 8,
@@ -113,33 +113,7 @@ const Home = () => (
   </Box>
 );
 
-// Map View Page (English)
-const MapView = () => (
-  <Box sx={{ padding: 4 }}>
-    <Typography variant="h4" gutterBottom sx={{ color: '#0039a6' }}>
-      Real-Time Map
-    </Typography>
-    <Typography variant="body1" color="text.secondary" mb={4}>
-      View live locations of NYC subways and buses. Track routes and get real-time updates on vehicle positions.
-    </Typography>
-    <Box sx={{ 
-      bgcolor: '#f5faff', 
-      padding: 4, 
-      borderRadius: 2, 
-      textAlign: 'center',
-      border: '1px solid #e3f2fd'
-    }}>
-      <Typography variant="h6" color="text.primary" mb={2}>
-        Map Integration Coming Soon
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        This feature will display interactive map with real-time transit data
-      </Typography>
-    </Box>
-  </Box>
-);
-
-// Arrival Times Page (English)
+// 到达时间页面（保留你的原始样式）
 const ArrivalTimes = () => (
   <Box sx={{ padding: 4 }}>
     <Typography variant="h4" gutterBottom sx={{ color: '#0039a6' }}>
@@ -185,7 +159,7 @@ const ArrivalTimes = () => (
   </Box>
 );
 
-// Service Status Page (English)
+// Service Status Page
 const ServiceStatus = () => (
   <Box sx={{ padding: 4 }}>
     <Typography variant="h4" gutterBottom sx={{ color: '#0039a6' }}>
@@ -233,7 +207,7 @@ const ServiceStatus = () => (
   </Box>
 );
 
-// User Account Page (English)
+// User Account Page
 const UserAccount = () => (
   <Box sx={{ padding: 4 }}>
     <Typography variant="h4" gutterBottom sx={{ color: '#0039a6' }}>
@@ -262,7 +236,7 @@ const UserAccount = () => (
   </Box>
 );
 
-// 404 Page (English)
+// 404
 const NotFound = () => (
   <Box sx={{ 
     padding: 4, 
@@ -298,7 +272,7 @@ const NotFound = () => (
   </Box>
 );
 
-// Router Configuration
+// Route Configuration
 const router = createBrowserRouter([
   {
     path: '/',
@@ -306,7 +280,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: '/', element: <Home /> },
-      { path: 'map', element: <MapView /> },
+      { path: 'map', element: <MapView /> }, // 现在指向 src/pages/MapView.tsx 真地图
       { path: 'arrivals', element: <ArrivalTimes /> },
       { path: 'status', element: <ServiceStatus /> },
       { path: 'account', element: <UserAccount /> },
